@@ -11,10 +11,12 @@ export const typeDefs = gql`
     createBookToRead(input: createBookToReadInput!): Book
   }
   type User {
-    id: Int!
+    id: String!
     name: String!
     ownedBooks: [Book]
     booksToRead: [Book]
+    createdAt: String
+    updatedAt: String
   }
   type Book {
     title: String
@@ -57,6 +59,7 @@ export const typeDefs = gql`
     authors: [String]
   }
   input createUserInput{
+    id: String!
     name: String!
   }
 `;

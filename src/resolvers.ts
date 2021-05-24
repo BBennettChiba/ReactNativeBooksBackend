@@ -16,14 +16,13 @@ export const resolvers = {
   },
   Mutation: {
     createUser: async (_: any, args: any) => {
-      const { name } = args;
+      const { name, id } = args.input;
       try {
-        let user = User.create({
-          name,
-        });
+        let user = new User()
+        user.name = name;
+        user.id = id
 
         user = await User.save(user);
-
         return user;
       } catch (error) {
         return false;

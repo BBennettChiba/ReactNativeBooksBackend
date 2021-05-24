@@ -10,6 +10,7 @@
    },
    "dependencies": {
       "apollo-server-express": "^2.24.1",
+      "cors": "^2.8.5",
       "express": "^4.17.1",
       "graphql": "^15.5.0",
       "pg": "^8.4.0",
@@ -17,6 +18,9 @@
       "typeorm": "0.2.31"
    },
    "scripts": {
-      "start": "ts-node-dev src/index.ts"
+      "start": "ts-node-dev src/index.ts",
+      "add-migration": "ts-node ./node_modules/typeorm/cli.js migration:generate -n",
+      "update-database": "ts-node ./node_modules/typeorm/cli.js migration:run",
+      "drop-tables": "ts-node ./node_modules/typeorm/cli.js schema:drop"
    }
 }

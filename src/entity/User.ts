@@ -1,6 +1,6 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
   ManyToMany,
   JoinTable,
@@ -12,8 +12,8 @@ import { Book } from "./Book";
 
 @Entity("User")
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: number;
+  @PrimaryColumn()
+  id: string;
 
   @Column()
   name: string;

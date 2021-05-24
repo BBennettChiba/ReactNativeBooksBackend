@@ -8,12 +8,14 @@ import { ApolloServer } from "apollo-server-express";
 
 import { typeDefs } from "./typeDefs";
 import { resolvers } from "./resolvers";
+import * as cors from 'cors'
 
 const startServer = async () => {
   const userRepo = await (await createConnection()).getRepository(User);
   const server = new ApolloServer({ typeDefs, resolvers });
 
   const app = express();
+  // app.use(cors())
 
   server.applyMiddleware({ app });
 
