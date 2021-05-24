@@ -8,6 +8,7 @@ export const typeDefs = gql`
   type Mutation {
     createUser(input: createUserInput!): User!
     createOwnedBook(input: createOwnedBookInput!): Book
+    createBookToRead(input: createBookToReadInput!): Book
   }
   type User {
     id: Int!
@@ -30,6 +31,19 @@ export const typeDefs = gql`
     updatedAt: String
   }
   input createOwnedBookInput{
+    title: String
+    userID: String
+    isbn: String
+    coverURL: String
+    language: String
+    pageCount: Int
+    publisher: String
+    publishedDate: String
+    description: String
+    categories: [String]
+    authors: [String]
+  }
+  input createBookToReadInput{
     title: String
     userID: String
     isbn: String

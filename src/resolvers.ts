@@ -3,23 +3,23 @@ import { Book } from "./entity/Book";
 import { User } from "./entity/User";
 
 // Provide resolver functions for your schema fields
-export const resolvers = ((userRepo) => ({
+export const resolvers = {
   Query: {
     getUser: async (_: any, args: any) => {
       const { id } = args;
-      const user = await User.findOne({ where: { id: id }, relations:["ownedBooks"]});
-      console.log(user)
-      return user
+      const user = await User.findOne({
+        where: { id: id },
+        relations: ["ownedBooks", "booksToRead"],
+      });
+      return user;
     },
   },
   Mutation: {
     createUser: async (_: any, args: any) => {
-      const { firstName, lastName, age } = args;
+      const { name } = args;
       try {
-        let user = userRepo.create({
-          firstName,
-          lastName,
-          age,
+        let user = User.create({
+          name,
         });
 
         user = await User.save(user);
@@ -32,23 +32,42 @@ export const resolvers = ((userRepo) => ({
     createOwnedBook: async (_: any, { input }: any) => {
       const userID = input.userID;
       try {
-        const user = await User.findOne({ id: userID });
-        delete input.userID; 
-        let book = new Book()
-        book = Object.assign({}, input)
-        user.ownedBooks = [book]
-        User.save(user)
+        const user = await User.findOne(
+          { id: userID },
+          { relations: ["ownedBooks", "booksToRead"] }
+        );
+        delete input.userID;
+        let book = new Book();
+        book = Object.assign(book, input);
+        user.ownedBooks.push(book);
+        User.save(user);
         return book;
       } catch (e) {
         return "Yo something went wrong";
       }
     },
-    // createBookToRead: async (_: any, args: any) =>{
-    // },
+    createBookToRead: async (_: any, { input }: any) => {
+      const userID = input.userID;
+      try {
+        const user = await User.findOne(
+          { id: userID },
+          { relations: ["ownedBooks", "booksToRead"] }
+        );
+        delete input.userID;
+        let book = new Book();
+        book = Object.assign(book, input);
+        user.booksToRead.push(book);
+        let db = await User.save(user);
+        console.log(db)
+        return book;
+      } catch (e) {
+        return "Yo something went wrong";
+      }
+    },
     // deleteOwnedBook: async(_:any, args: any) =>{
     // },
     // deleteBookToRead: async(_:any, args: any) =>{
 
     // }
   },
-}))();
+};
