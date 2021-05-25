@@ -15,8 +15,7 @@ const startServer = async () => {
   const server = new ApolloServer({ typeDefs, resolvers });
 
   const app = express();
-  // app.use(cors())
-
+  
   server.applyMiddleware({ app });
 
   app.listen({ port: 4000 }, () =>

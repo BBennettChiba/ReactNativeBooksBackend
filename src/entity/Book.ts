@@ -5,12 +5,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  PrimaryGeneratedColumn
 } from "typeorm";
 
 @Entity()
 export class Book extends BaseEntity{
   @Column()
   title: string;
+
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @PrimaryColumn()
   isbn: string;

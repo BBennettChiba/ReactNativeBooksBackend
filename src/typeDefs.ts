@@ -9,6 +9,8 @@ export const typeDefs = gql`
     createUser(input: createUserInput!): User!
     createOwnedBook(input: createOwnedBookInput!): Book
     createBookToRead(input: createBookToReadInput!): Book
+    deleteBookToRead(input: deleteBookToReadInput!): String
+    deleteOwnedBook(input: deleteOwnedBookInput!): String
   }
   type User {
     id: String!
@@ -19,6 +21,7 @@ export const typeDefs = gql`
     updatedAt: String
   }
   type Book {
+    id: String
     title: String
     isbn: String
     coverURL: String
@@ -61,5 +64,13 @@ export const typeDefs = gql`
   input createUserInput{
     id: String!
     name: String!
+  }
+  input deleteBookToReadInput{
+    id: String!
+    userID: String!
+  }
+  input deleteOwnedBookInput{
+    id: String!
+    userID: String!
   }
 `;
