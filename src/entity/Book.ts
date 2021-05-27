@@ -34,7 +34,7 @@ export class Book extends BaseEntity{
   @Column()
   publishedDate: string;
 
-  @Column()
+  @Column({nullable:true})
   description: string;
 
   @Column("text", { array: true })

@@ -23,6 +23,8 @@ export const resolvers = {
         user.id = id;
 
         user = await User.save(user);
+        user.ownedBooks = [];
+        user.booksToRead = [];
         return user;
       } catch (error) {
         return false;
@@ -31,7 +33,7 @@ export const resolvers = {
     createOwnedBook: async (_: any, { input }: any) => {
       const userID = input.userID;
       try {
-        const user = await User.findOne(
+        let user = await User.findOne(
           { id: userID },
           { relations: ["ownedBooks", "booksToRead"] }
         );
@@ -39,7 +41,7 @@ export const resolvers = {
         let book = new Book();
         book = Object.assign(book, input);
         user.ownedBooks.push(book);
-        User.save(user);
+        user = await User.save(user);
         return book;
       } catch (e) {
         return "Yo something went wrong";
@@ -65,9 +67,18 @@ export const resolvers = {
         return "Yo something went wrong";
       }
     },
-    deleteOwnedBook: async (_: any, args: any) => {
+    deleteOwnedBook: async (_: any, { input }: any) => {
       try {
-        console.log(args);
+        const user = await User.findOne(
+          { id: input.userID },
+          { relations: ["ownedBooks", "booksToRead"] }
+        );
+        user.ownedBooks = user.ownedBooks.filter((a) => a.id !== input.id);
+        try {
+          let db = await User.save(user);
+        } catch (e) {
+          console.log(e);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -80,7 +91,6 @@ export const resolvers = {
           { relations: ["ownedBooks", "booksToRead"] }
         );
         user.booksToRead = user.booksToRead.filter((a) => a.id !== input.id);
-        console.log(user);
         try {
           let db = await User.save(user);
         } catch (e) {
